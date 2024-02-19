@@ -1,0 +1,24 @@
+name: delivery_app
+description: "A new Flutter project."
+version: 0.0.1+1
+
+environment:
+  sdk: '>=3.2.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Code generation
+  build_runner: ^2.4.8
+
+  # Lints
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
