@@ -9,6 +9,18 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Dependency injection
+  flutter_riverpod: ^2.4.0
+
+  # Navigation
+  auto_route: ^7.8.4
+
+  # Code generation
+  auto_route_generator: ^7.3.2
+
+  # Fonts
+  google_fonts: ^6.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -19,6 +31,8 @@ dev_dependencies:
 
   # Lints
   flutter_lints: ^2.0.0
+
+
 
 flutter:
   uses-material-design: true
