@@ -9,6 +9,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Widgets
+  flutter_svg: ^2.0.7
+
   # Dependency injection
   flutter_riverpod: ^2.4.0
 
@@ -21,6 +24,9 @@ dependencies:
   # Fonts
   google_fonts: ^6.1.0
 
+  # Validation
+  email_validator: ^2.1.17
+
 
 dev_dependencies:
   flutter_test:
@@ -28,11 +34,19 @@ dev_dependencies:
 
   # Code generation
   build_runner: ^2.4.8
+  flutter_gen_runner: ^5.3.1
 
   # Lints
   flutter_lints: ^2.0.0
 
+flutter_gen:
+  output: lib/src/core/resources
+  line_length: 80
 
+  integrations:
+    flutter_svg: true
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icons/

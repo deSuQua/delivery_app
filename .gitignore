@@ -45,3 +45,4 @@ app.*.map.json
 # Codegen
 *.g.dart
 *.gr.dart
+*.gen.dart
