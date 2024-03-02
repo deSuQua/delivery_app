@@ -49,6 +49,7 @@ abstract class AppThemeBase implements IAppTheme {
         style: ElevatedButton.styleFrom(
           maximumSize: const Size.fromHeight(46),
           minimumSize: const Size.fromHeight(46),
+          textStyle: textTheme.subtitleBold16.copyWith(color: colors.white),
           backgroundColor: colors.primary,
           foregroundColor: colors.white,
           shape: RoundedRectangleBorder(

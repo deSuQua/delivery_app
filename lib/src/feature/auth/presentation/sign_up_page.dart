@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
+import 'package:delivery_app/src/core/router/router.dart';
+import 'package:delivery_app/src/feature/auth/presentation/widgets/widgets.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -88,9 +90,6 @@ class _BodyLayoutState extends State<_BodyLayout> {
           top: 36 + context.mediaQuery.padding.top,
           left: 24,
           right: 24,
-          bottom: 24 +
-              context.mediaQuery.padding.bottom +
-              context.mediaQuery.viewInsets.bottom,
         ),
         child: SingleChildScrollView(
             child: Column(
@@ -115,7 +114,18 @@ class _BodyLayoutState extends State<_BodyLayout> {
             _BottomButton(
               validator: _validator,
             ),
-            const _SignUpText(),
+            const _SignInText(),
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: 24 +
+                    context.mediaQuery.padding.bottom +
+                    context.mediaQuery.viewInsets.bottom,
+              ),
+              child: GoogleButton(
+                text: 'or sign in using',
+                onTap: () {},
+              ),
+            ),
           ],
         )),
       );
@@ -276,20 +286,15 @@ class _BottomButton extends StatelessWidget {
           animation: validator,
           builder: (BuildContext context, Widget? child) => ElevatedButton(
             onPressed: validator.value ? () {} : null,
-            child: Text(
-              'Sign Up',
-              style: context.theme.textTheme.subtitleBold16.copyWith(
-                color: context.theme.colors.white,
-              ),
-            ),
+            child: const Text('Sign Up'),
           ),
         ),
       );
 }
 
 @immutable
-class _SignUpText extends StatelessWidget {
-  const _SignUpText({
+class _SignInText extends StatelessWidget {
+  const _SignInText({
     Key? key,
   }) : super(key: key);
 
@@ -303,20 +308,25 @@ class _SignUpText extends StatelessWidget {
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-                text: 'Already have an account? ',
-                style: context.theme.textTheme.bodyRegular14.copyWith(
-                  color: context.theme.colors.gray2,
-                ),
-                children: [
-                  TextSpan(
-                    text: 'Sign in',
-                    recognizer: TapGestureRecognizer()..onTap = () {},
-                    style: context.theme.textTheme.bodyRegular14.copyWith(
-                      color: context.theme.colors.primary,
-                    ),
+              text: 'Already have an account? ',
+              style: context.theme.textTheme.bodyRegular14.copyWith(
+                color: context.theme.colors.gray2,
+              ),
+              children: [
+                TextSpan(
+                  text: 'Sign in',
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => _onSignIn(context),
+                  style: context.theme.textTheme.bodyRegular14.copyWith(
+                    color: context.theme.colors.primary,
                   ),
-                ]),
+                ),
+              ],
+            ),
           ),
         ),
       );
+
+  Future<void> _onSignIn(BuildContext context) =>
+      context.router.push(const LogInRoute());
 }
