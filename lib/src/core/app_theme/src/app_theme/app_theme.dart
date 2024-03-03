@@ -33,6 +33,7 @@ abstract class AppThemeBase implements IAppTheme {
         elevatedButtonTheme: _elevatedButtonTheme,
         checkboxTheme: _checkboxTheme,
         scaffoldBackgroundColor: colors.white,
+        bottomNavigationBarTheme: _bottomNavigationBarTheme,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       );
 
@@ -43,6 +44,23 @@ abstract class AppThemeBase implements IAppTheme {
         elevation: 10,
         scrolledUnderElevation: 0,
         backgroundColor: colors.white,
+      );
+
+  BottomNavigationBarThemeData get _bottomNavigationBarTheme =>
+      BottomNavigationBarThemeData(
+        elevation: 10,
+        backgroundColor: colors.white,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: colors.primary,
+        unselectedItemColor: colors.gray2,
+        selectedIconTheme: IconThemeData(
+          color: colors.primary,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: colors.gray2,
+        ),
+        selectedLabelStyle: textTheme.bodyRegular12,
+        unselectedLabelStyle: textTheme.bodyRegular12,
       );
 
   ElevatedButtonThemeData get _elevatedButtonTheme => ElevatedButtonThemeData(

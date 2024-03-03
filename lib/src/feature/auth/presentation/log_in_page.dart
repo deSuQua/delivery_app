@@ -218,7 +218,7 @@ class _BottomLayout extends StatelessWidget {
             AnimatedBuilder(
               animation: validator,
               builder: (BuildContext context, Widget? child) => ElevatedButton(
-                onPressed: validator.value ? () {} : null,
+                onPressed: validator.value ? () => _onLogin(context) : null,
                 child: const Text('Log in'),
               ),
             ),
@@ -237,6 +237,9 @@ class _BottomLayout extends StatelessWidget {
           ],
         ),
       );
+
+  void _onLogin(BuildContext context) =>
+      context.router.push(const RootRouterRoute());
 }
 
 @immutable

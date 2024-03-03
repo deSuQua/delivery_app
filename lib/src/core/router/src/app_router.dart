@@ -42,5 +42,44 @@ class AppRouter extends $AppRouter {
       page: NewPasswordRoute.page,
       path: '/new-passwrod',
     ),
+
+    // /// Главный экран
+    // AdaptiveRoute(
+    //   page: RootRouterRoute.page,
+    //   path: '/',
+    //   children: [
+    //     /// Главный экран с табами
+    //     AdaptiveRoute(
+    //       page: RootTabRoute.page,
+    //       path: '',
+    //       children: [
+    //         /// Экран "Главная"
+    //         AdaptiveRoute(
+    //           initial: true,
+    //           page: HomeTab.page,
+    //           path: 'home-tab',
+    //         ),
+    //
+    //         /// Экран "Кошелек"
+    //         AdaptiveRoute(
+    //           page: WalletTab.page,
+    //           path: 'wallet-tab',
+    //         ),
+    //
+    //         /// Экран "Отслеживание"
+    //         AdaptiveRoute(
+    //           page: TrackTab.page,
+    //           path: 'track-tab',
+    //         ),
+    //
+    //         /// Экран "Профиль"
+    //         AdaptiveRoute(
+    //           page: ProfileTab.page,
+    //           path: 'profile-tab',
+    //         ),
+    //       ],
+    //     ),
+    //   ],
+    // ),
   ];
 }
