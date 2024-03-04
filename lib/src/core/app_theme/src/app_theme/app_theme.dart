@@ -32,6 +32,7 @@ abstract class AppThemeBase implements IAppTheme {
         iconButtonTheme: _iconButtonTheme,
         elevatedButtonTheme: _elevatedButtonTheme,
         checkboxTheme: _checkboxTheme,
+        switchTheme: _switchTheme,
         scaffoldBackgroundColor: colors.white,
         bottomNavigationBarTheme: _bottomNavigationBarTheme,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -47,7 +48,7 @@ abstract class AppThemeBase implements IAppTheme {
         surfaceTintColor: colors.white,
         elevation: 3,
         shadowColor: Colors.black.withOpacity(0.5),
-        scrolledUnderElevation: 0,
+        scrolledUnderElevation: 3,
         backgroundColor: colors.white,
       );
 
@@ -86,6 +87,26 @@ abstract class AppThemeBase implements IAppTheme {
         maximumSize: const Size.square(40),
         foregroundColor: colors.text4,
       ));
+
+  SwitchThemeData get _switchTheme => SwitchThemeData(
+        thumbColor: MaterialStateProperty.resolveWith(
+          (states) => colors.white,
+        ),
+        overlayColor: MaterialStateProperty.resolveWith(
+          (states) => Colors.transparent,
+        ),
+        trackColor: MaterialStateProperty.resolveWith(
+          (states) {
+            if (states.contains(MaterialState.selected)) {
+              return colors.primary;
+            }
+            return colors.gray1;
+          },
+        ),
+        trackOutlineColor: MaterialStateProperty.resolveWith(
+          (states) => Colors.transparent,
+        ),
+      );
 
   CheckboxThemeData get _checkboxTheme => CheckboxThemeData(
       checkColor: MaterialStateProperty.resolveWith(
