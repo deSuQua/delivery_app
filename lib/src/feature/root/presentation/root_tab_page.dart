@@ -29,28 +29,38 @@ class RootTabPage extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),
-            child: BottomNavigationBar(
-              backgroundColor: context.theme.colors.white,
-              onTap: context.tabsRouter.setActiveIndex,
-              currentIndex: context.watchTabsRouter.activeIndex,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: _HomeIcon(),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: _WalletIcon(),
-                  label: 'Wallet',
-                ),
-                BottomNavigationBarItem(
-                  icon: _TrackIcon(),
-                  label: 'Track',
-                ),
-                BottomNavigationBarItem(
-                  icon: _ProfileIcon(),
-                  label: 'Profile',
-                ),
-              ],
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: BottomNavigationBar(
+                backgroundColor: context.theme.colors.white,
+                onTap: context.tabsRouter.setActiveIndex,
+                currentIndex: context.watchTabsRouter.activeIndex,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: _HomeIcon(),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: _WalletIcon(),
+                    label: 'Wallet',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: _TrackIcon(),
+                    label: 'Track',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: _ProfileIcon(),
+                    label: 'Profile',
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -65,21 +75,25 @@ class _HomeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon =
-        _isActive(context) ? Assets.icons.homeSelected : Assets.icons.home;
-    final colorFilter = _isActive(context)
+    final isActive = _isActive(context);
+
+    final icon = isActive ? Assets.icons.homeSelected : Assets.icons.home;
+    final colorFilter = isActive
         ? null
         : ColorFilter.mode(
             context.theme.colors.gray2,
             BlendMode.srcIn,
           );
 
-    return _IconPadding(
-      child: icon.svg(
-        width: 24,
-        height: 24,
-        colorFilter: colorFilter,
+    return _ActiveIndicator(
+      icon: _IconPadding(
+        child: icon.svg(
+          width: 24,
+          height: 24,
+          colorFilter: colorFilter,
+        ),
       ),
+      isActive: isActive,
     );
   }
 
@@ -95,21 +109,25 @@ class _WalletIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon =
-        _isActive(context) ? Assets.icons.walletSelected : Assets.icons.wallet;
-    final colorFilter = _isActive(context)
+    final isActive = _isActive(context);
+
+    final icon = isActive ? Assets.icons.walletSelected : Assets.icons.wallet;
+    final colorFilter = isActive
         ? null
         : ColorFilter.mode(
             context.theme.colors.gray2,
             BlendMode.srcIn,
           );
 
-    return _IconPadding(
-      child: icon.svg(
-        width: 24,
-        height: 24,
-        colorFilter: colorFilter,
+    return _ActiveIndicator(
+      icon: _IconPadding(
+        child: icon.svg(
+          width: 24,
+          height: 24,
+          colorFilter: colorFilter,
+        ),
       ),
+      isActive: isActive,
     );
   }
 
@@ -125,21 +143,25 @@ class _TrackIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon =
-        _isActive(context) ? Assets.icons.trackSelected : Assets.icons.track;
-    final colorFilter = _isActive(context)
+    final isActive = _isActive(context);
+
+    final icon = isActive ? Assets.icons.trackSelected : Assets.icons.track;
+    final colorFilter = isActive
         ? null
         : ColorFilter.mode(
             context.theme.colors.gray2,
             BlendMode.srcIn,
           );
 
-    return _IconPadding(
-      child: icon.svg(
-        width: 24,
-        height: 24,
-        colorFilter: colorFilter,
+    return _ActiveIndicator(
+      icon: _IconPadding(
+        child: icon.svg(
+          width: 24,
+          height: 24,
+          colorFilter: colorFilter,
+        ),
       ),
+      isActive: isActive,
     );
   }
 
@@ -155,22 +177,25 @@ class _ProfileIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = _isActive(context)
-        ? Assets.icons.profileSelected
-        : Assets.icons.profile;
-    final colorFilter = _isActive(context)
+    final isActive = _isActive(context);
+
+    final icon = isActive ? Assets.icons.profileSelected : Assets.icons.profile;
+    final colorFilter = isActive
         ? null
         : ColorFilter.mode(
             context.theme.colors.gray2,
             BlendMode.srcIn,
           );
 
-    return _IconPadding(
-      child: icon.svg(
-        width: 24,
-        height: 24,
-        colorFilter: colorFilter,
+    return _ActiveIndicator(
+      icon: _IconPadding(
+        child: icon.svg(
+          width: 24,
+          height: 24,
+          colorFilter: colorFilter,
+        ),
       ),
+      isActive: isActive,
     );
   }
 
@@ -192,4 +217,51 @@ class _IconPadding extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 3),
         child: child,
       );
+}
+
+@immutable
+class _ActiveIndicator extends StatelessWidget {
+  final Widget icon;
+  final bool isActive;
+
+  /// Индикатор иконки
+  const _ActiveIndicator({
+    required this.icon,
+    required this.isActive,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isActive) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 9),
+        child: icon,
+      );
+    }
+    return Column(
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: context.theme.colors.primary.withOpacity(.5),
+                offset: const Offset(0, 1),
+                blurRadius: 2,
+              ),
+            ],
+          ),
+          child: ColoredBox(
+            color: context.theme.colors.primary,
+            child: const SizedBox(
+              width: 32,
+              height: 2,
+            ),
+          ),
+        ),
+        const SizedBox(height: 7),
+        icon,
+      ],
+    );
+  }
 }

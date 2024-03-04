@@ -39,16 +39,20 @@ abstract class AppThemeBase implements IAppTheme {
 
   AppBarTheme get _appBarTheme => AppBarTheme(
         centerTitle: true,
-        toolbarHeight: 56,
+        toolbarHeight: 64,
         titleSpacing: 12,
-        elevation: 10,
+        titleTextStyle: textTheme.subtitleMedium16.copyWith(
+          color: colors.gray2,
+        ),
+        surfaceTintColor: colors.white,
+        elevation: 3,
+        shadowColor: Colors.black.withOpacity(0.5),
         scrolledUnderElevation: 0,
         backgroundColor: colors.white,
       );
 
   BottomNavigationBarThemeData get _bottomNavigationBarTheme =>
       BottomNavigationBarThemeData(
-        elevation: 10,
         backgroundColor: colors.white,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: colors.primary,

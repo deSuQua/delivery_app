@@ -12,74 +12,87 @@ class AppRouter extends $AppRouter {
 
   @override
   late final List<AutoRoute> routes = [
-    /// Экран "Регистрация"
+    /// Авторизация
     AdaptiveRoute(
-      page: SignUpRoute.page,
-      initial: true,
-      path: '/sign-up',
+      page: AuthRouterRoute.page,
+      path: '/auth',
+      children: [
+        /// Экран "Регистрация"
+        AdaptiveRoute(
+          page: SignUpRoute.page,
+          initial: true,
+          path: '',
+        ),
+
+        /// Экран "Верификация"
+        AdaptiveRoute(
+          page: AuthCodeRoute.page,
+          path: 'auth-code',
+        ),
+
+        /// Экран "Авторизация"
+        AdaptiveRoute(
+          page: LogInRoute.page,
+          path: 'log-in',
+        ),
+
+        /// Экран "Забыли пароль"
+        AdaptiveRoute(
+          page: ForgotPasswordRoute.page,
+          path: 'forgot-password',
+        ),
+
+        /// Экран "Новый пароль"
+        AdaptiveRoute(
+          page: NewPasswordRoute.page,
+          path: 'new-passwrod',
+        ),
+      ],
     ),
 
-    /// Экран "Верификация"
+    /// Главный экран
     AdaptiveRoute(
-      page: AuthCodeRoute.page,
-      path: '/auth-code',
-    ),
+      page: RootRouterRoute.page,
+      path: '/',
+      children: [
+        /// Главный экран с табами
+        AdaptiveRoute(
+          page: RootTabRoute.page,
+          path: '',
+          children: [
+            /// Экран "Главная"
+            AdaptiveRoute(
+              initial: true,
+              page: HomeTab.page,
+              path: 'home-tab',
+            ),
 
-    /// Экран "Авторизация"
-    AdaptiveRoute(
-      page: LogInRoute.page,
-      path: '/log-in',
-    ),
+            /// Экран "Кошелек"
+            AdaptiveRoute(
+              page: WalletTab.page,
+              path: 'wallet-tab',
+            ),
 
-    /// Экран "Забыли пароль"
-    AdaptiveRoute(
-      page: ForgotPasswordRoute.page,
-      path: '/forgot-password',
-    ),
+            /// Экран "Отслеживание"
+            AdaptiveRoute(
+              page: TrackTab.page,
+              path: 'track-tab',
+            ),
 
-    /// Экран "Новый пароль"
-    AdaptiveRoute(
-      page: NewPasswordRoute.page,
-      path: '/new-passwrod',
-    ),
+            /// Экран "Профиль"
+            AdaptiveRoute(
+              page: ProfileTab.page,
+              path: 'profile-tab',
+            ),
+          ],
+        ),
 
-    // /// Главный экран
-    // AdaptiveRoute(
-    //   page: RootRouterRoute.page,
-    //   path: '/',
-    //   children: [
-    //     /// Главный экран с табами
-    //     AdaptiveRoute(
-    //       page: RootTabRoute.page,
-    //       path: '',
-    //       children: [
-    //         /// Экран "Главная"
-    //         AdaptiveRoute(
-    //           initial: true,
-    //           page: HomeTab.page,
-    //           path: 'home-tab',
-    //         ),
-    //
-    //         /// Экран "Кошелек"
-    //         AdaptiveRoute(
-    //           page: WalletTab.page,
-    //           path: 'wallet-tab',
-    //         ),
-    //
-    //         /// Экран "Отслеживание"
-    //         AdaptiveRoute(
-    //           page: TrackTab.page,
-    //           path: 'track-tab',
-    //         ),
-    //
-    //         /// Экран "Профиль"
-    //         AdaptiveRoute(
-    //           page: ProfileTab.page,
-    //           path: 'profile-tab',
-    //         ),
-    //       ],
-    //     ),
-    //   ],
-    // ),
+        /// Экран "Уведомления"
+        AdaptiveRoute(
+          page: NotificationRoute.page,
+          path: 'notification',
+        ),
+      ],
+    ),
   ];
 }

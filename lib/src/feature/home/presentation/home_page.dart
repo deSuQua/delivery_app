@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -11,7 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
+        appBar: PrimaryAppBar(
           title: Text('asd'),
         ),
         body: _BodyLayout(),

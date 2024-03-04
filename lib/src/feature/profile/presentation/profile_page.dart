@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:delivery_app/src/core/router/src/app_router.dart';
+import 'package:delivery_app/src/core/ui_kit/src/app_kit/app_kit.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -11,6 +13,9 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Scaffold(
+        appBar: PrimaryAppBar(
+          title: Text('Profile'),
+        ),
         body: _BodyLayout(),
       );
 }
@@ -23,5 +28,9 @@ class _BodyLayout extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const Placeholder();
+  Widget build(BuildContext context) => ElevatedButton(
+      onPressed: () {
+        context.router.push(const NotificationRoute());
+      },
+      child: Text('asd'));
 }
