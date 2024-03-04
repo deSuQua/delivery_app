@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
 import 'package:delivery_app/src/core/router/router.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-
 import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
+import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
 @immutable
@@ -56,14 +54,17 @@ class _BodyLayoutState extends State<_BodyLayout> {
   @override
   Widget build(BuildContext context) => Padding(
         padding: EdgeInsets.only(
-          top: 110 + context.mediaQuery.padding.top,
-          left: 24,
-          right: 24,
-          bottom: 24 +
-              context.mediaQuery.padding.bottom +
-              context.mediaQuery.viewInsets.bottom,
+          top: context.mediaQuery.padding.top,
         ),
         child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            top: 110,
+            left: 24,
+            right: 24,
+            bottom: 24 +
+                context.mediaQuery.padding.bottom +
+                context.mediaQuery.viewInsets.bottom,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

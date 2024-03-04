@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
 import 'package:delivery_app/src/core/router/router.dart';
+import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
 import 'package:delivery_app/src/feature/auth/presentation/widgets/widgets.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
 
 @RoutePage<void>()
 class SignUpPage extends StatelessWidget {
@@ -86,48 +86,45 @@ class _BodyLayoutState extends State<_BodyLayout> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.only(
-          top: 36 + context.mediaQuery.padding.top,
-          left: 24,
-          right: 24,
-        ),
+        padding: EdgeInsets.only(top: context.mediaQuery.padding.top),
         child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+              top: 36,
+              left: 24,
+              right: 24,
+              bottom: 24 +
+                  context.mediaQuery.padding.bottom +
+                  context.mediaQuery.viewInsets.bottom,
+            ),
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const AuthTitleText(
-              title: 'Create an account',
-              subtitle: 'Complete the sign up process to get started',
-            ),
-            _SignInForm(
-              fullNameController: _fullNameController,
-              phoneController: _phoneController,
-              emailController: _emailController,
-              passwordController: _passwordController,
-              confirmPasswordController: _confirmPasswordController,
-              passwordShowController: _passwordShowController,
-              confirmPasswordShowController: _confirmPasswordShowController,
-            ),
-            _CheckBox(
-              termsConditionController: _termsConditionController,
-            ),
-            _BottomButton(
-              validator: _validator,
-            ),
-            const _SignInText(),
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: 24 +
-                    context.mediaQuery.padding.bottom +
-                    context.mediaQuery.viewInsets.bottom,
-              ),
-              child: GoogleButton(
-                text: 'or sign in using',
-                onTap: () {},
-              ),
-            ),
-          ],
-        )),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const AuthTitleText(
+                  title: 'Create an account',
+                  subtitle: 'Complete the sign up process to get started',
+                ),
+                _SignInForm(
+                  fullNameController: _fullNameController,
+                  phoneController: _phoneController,
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                  confirmPasswordController: _confirmPasswordController,
+                  passwordShowController: _passwordShowController,
+                  confirmPasswordShowController: _confirmPasswordShowController,
+                ),
+                _CheckBox(
+                  termsConditionController: _termsConditionController,
+                ),
+                _BottomButton(
+                  validator: _validator,
+                ),
+                const _SignInText(),
+                GoogleButton(
+                  text: 'or sign in using',
+                  onTap: () {},
+                ),
+              ],
+            )),
       );
 
   void _validate() =>
