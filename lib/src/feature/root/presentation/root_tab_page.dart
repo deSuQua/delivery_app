@@ -2,7 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
 import 'package:delivery_app/src/core/resources/resources.dart';
 import 'package:delivery_app/src/core/router/router.dart';
+import 'package:delivery_app/src/feature/app_theme/bloc/app_theme.dart';
+import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @immutable
 @RoutePage<void>()
@@ -13,63 +17,103 @@ class RootTabPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => AutoTabsScaffold(
-        resizeToAvoidBottomInset: false,
-        navigatorObservers: () => [AutoRouteObserver()],
-        routes: const [
-          HomeTab(),
-          WalletTab(),
-          TrackTab(),
-          ProfileTab(),
-        ],
-        bottomNavigationBuilder: (context, tabsRouter) => SizedBox(
-          height: 60 + context.mediaQuery.padding.bottom,
-          child: Theme(
-            data: context.theme.data.copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                  ),
-                ],
+  Widget build(BuildContext context) {
+    print(context.theme.data.brightness);
+    return AutoTabsScaffold(
+      resizeToAvoidBottomInset: false,
+      navigatorObservers: () => [AutoRouteObserver()],
+      routes: const [
+        HomeTab(),
+        WalletTab(),
+        TrackTab(),
+        ProfileTab(),
+      ],
+      bottomNavigationBuilder: (context, tabsRouter) => Consumer(
+        // TODO(all): Вынести в di bloc builder
+        builder: (context, ref, _) => BlocBuilder<AppThemeBloc, AppThemeState>(
+          bloc: ref.watch(AppThemeDI.bloc),
+          builder: (context, state) => SizedBox(
+            height: 60 + context.mediaQuery.padding.bottom,
+            child: Theme(
+              data: context.theme.data.copyWith(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
               ),
-              child: BottomNavigationBar(
-                backgroundColor: context.theme.colors.white,
-                onTap: context.tabsRouter.setActiveIndex,
-                currentIndex: context.watchTabsRouter.activeIndex,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: _HomeIcon(),
-                    label: 'Home',
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                    ),
+                  ],
+                ),
+                child: BottomNavigationBar(
+                  backgroundColor: state.map(
+                    light: (_) => context.theme.colors.background,
+                    dark: (_) => context.theme.colors.background,
                   ),
-                  BottomNavigationBarItem(
-                    icon: _WalletIcon(),
-                    label: 'Wallet',
+                  selectedItemColor: context.theme.colors.primary,
+                  unselectedItemColor: state.map(
+                    light: (_) => context.theme.colors.gray2,
+                    dark: (_) => context.theme.colors.white,
                   ),
-                  BottomNavigationBarItem(
-                    icon: _TrackIcon(),
-                    label: 'Track',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _ProfileIcon(),
-                    label: 'Profile',
-                  ),
-                ],
+                  onTap: context.tabsRouter.setActiveIndex,
+                  currentIndex: context.watchTabsRouter.activeIndex,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: _NavigationIcon(
+                        activeIndex: 0,
+                        icon: Assets.icons.home,
+                        selectedIcon: Assets.icons.homeSelected,
+                      ),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _NavigationIcon(
+                        activeIndex: 1,
+                        icon: Assets.icons.wallet,
+                        selectedIcon: Assets.icons.walletSelected,
+                      ),
+                      label: 'Wallet',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _NavigationIcon(
+                        activeIndex: 2,
+                        icon: Assets.icons.track,
+                        selectedIcon: Assets.icons.trackSelected,
+                      ),
+                      label: 'Track',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _NavigationIcon(
+                        activeIndex: 3,
+                        icon: Assets.icons.profile,
+                        selectedIcon: Assets.icons.profileSelected,
+                      ),
+                      label: 'Profile',
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 @immutable
-class _HomeIcon extends StatelessWidget {
-  const _HomeIcon({
+class _NavigationIcon extends StatelessWidget {
+  final SvgGenImage icon;
+  final SvgGenImage selectedIcon;
+  final int activeIndex;
+
+  const _NavigationIcon({
+    required this.activeIndex,
+    required this.icon,
+    required this.selectedIcon,
     Key? key,
   }) : super(key: key);
 
@@ -77,17 +121,20 @@ class _HomeIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final isActive = _isActive(context);
 
-    final icon = isActive ? Assets.icons.homeSelected : Assets.icons.home;
+    final unselectedColor = context.theme.data.brightness == Brightness.light
+        ? context.theme.colors.gray2
+        : context.theme.colors.white;
+    final navigationIcon = isActive ? selectedIcon : icon;
     final colorFilter = isActive
         ? null
         : ColorFilter.mode(
-            context.theme.colors.gray2,
+            unselectedColor,
             BlendMode.srcIn,
           );
 
     return _ActiveIndicator(
       icon: _IconPadding(
-        child: icon.svg(
+        child: navigationIcon.svg(
           width: 24,
           height: 24,
           colorFilter: colorFilter,
@@ -98,109 +145,7 @@ class _HomeIcon extends StatelessWidget {
   }
 
   bool _isActive(BuildContext context) =>
-      context.watchTabsRouter.activeIndex == 0;
-}
-
-@immutable
-class _WalletIcon extends StatelessWidget {
-  const _WalletIcon({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final isActive = _isActive(context);
-
-    final icon = isActive ? Assets.icons.walletSelected : Assets.icons.wallet;
-    final colorFilter = isActive
-        ? null
-        : ColorFilter.mode(
-            context.theme.colors.gray2,
-            BlendMode.srcIn,
-          );
-
-    return _ActiveIndicator(
-      icon: _IconPadding(
-        child: icon.svg(
-          width: 24,
-          height: 24,
-          colorFilter: colorFilter,
-        ),
-      ),
-      isActive: isActive,
-    );
-  }
-
-  bool _isActive(BuildContext context) =>
-      context.watchTabsRouter.activeIndex == 1;
-}
-
-@immutable
-class _TrackIcon extends StatelessWidget {
-  const _TrackIcon({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final isActive = _isActive(context);
-
-    final icon = isActive ? Assets.icons.trackSelected : Assets.icons.track;
-    final colorFilter = isActive
-        ? null
-        : ColorFilter.mode(
-            context.theme.colors.gray2,
-            BlendMode.srcIn,
-          );
-
-    return _ActiveIndicator(
-      icon: _IconPadding(
-        child: icon.svg(
-          width: 24,
-          height: 24,
-          colorFilter: colorFilter,
-        ),
-      ),
-      isActive: isActive,
-    );
-  }
-
-  bool _isActive(BuildContext context) =>
-      context.watchTabsRouter.activeIndex == 2;
-}
-
-@immutable
-class _ProfileIcon extends StatelessWidget {
-  const _ProfileIcon({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final isActive = _isActive(context);
-
-    final icon = isActive ? Assets.icons.profileSelected : Assets.icons.profile;
-    final colorFilter = isActive
-        ? null
-        : ColorFilter.mode(
-            context.theme.colors.gray2,
-            BlendMode.srcIn,
-          );
-
-    return _ActiveIndicator(
-      icon: _IconPadding(
-        child: icon.svg(
-          width: 24,
-          height: 24,
-          colorFilter: colorFilter,
-        ),
-      ),
-      isActive: isActive,
-    );
-  }
-
-  bool _isActive(BuildContext context) =>
-      context.watchTabsRouter.activeIndex == 3;
+      context.watchTabsRouter.activeIndex == activeIndex;
 }
 
 @immutable

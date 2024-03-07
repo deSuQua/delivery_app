@@ -15,6 +15,9 @@ abstract class IAppTheme {
 }
 
 abstract class AppThemeBase implements IAppTheme {
+  /// Светлая/темная тема
+  final Brightness brightness;
+
   /// Статические цвета
   @override
   final IAppColors colors;
@@ -27,13 +30,13 @@ abstract class AppThemeBase implements IAppTheme {
   @override
   ThemeData get data => ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: colors.text4),
         appBarTheme: _appBarTheme,
         iconButtonTheme: _iconButtonTheme,
         elevatedButtonTheme: _elevatedButtonTheme,
         checkboxTheme: _checkboxTheme,
         switchTheme: _switchTheme,
-        scaffoldBackgroundColor: colors.white,
+        brightness: brightness,
+        scaffoldBackgroundColor: colors.background,
         bottomNavigationBarTheme: _bottomNavigationBarTheme,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       );
@@ -56,14 +59,6 @@ abstract class AppThemeBase implements IAppTheme {
       BottomNavigationBarThemeData(
         backgroundColor: colors.white,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: colors.primary,
-        unselectedItemColor: colors.gray2,
-        selectedIconTheme: IconThemeData(
-          color: colors.primary,
-        ),
-        unselectedIconTheme: IconThemeData(
-          color: colors.gray2,
-        ),
         selectedLabelStyle: textTheme.bodyRegular12,
         unselectedLabelStyle: textTheme.bodyRegular12,
       );
@@ -127,6 +122,7 @@ abstract class AppThemeBase implements IAppTheme {
 
   /// App theme base
   const AppThemeBase({
+    required this.brightness,
     required this.textTheme,
     required this.colors,
   });

@@ -3,7 +3,8 @@ import 'package:delivery_app/src/core/extenstion/extenstions.dart';
 import 'package:delivery_app/src/core/resources/assets.gen.dart';
 import 'package:delivery_app/src/core/router/router.dart';
 import 'package:delivery_app/src/core/ui_kit/src/app_kit/app_kit.dart';
-import 'package:flutter/gestures.dart';
+import 'package:delivery_app/src/feature/app_theme/bloc/app_theme.dart';
+import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -81,11 +82,30 @@ class _BodyLayout extends StatelessWidget {
 }
 
 @immutable
-class _UserCard extends StatelessWidget {
+class _UserCard extends StatefulWidget {
   /// Карточка пользователя
   const _UserCard({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<_UserCard> createState() => _UserCardState();
+}
+
+class _UserCardState extends State<_UserCard> {
+  late final ValueNotifier<bool> _hideBalanceController;
+
+  @override
+  void initState() {
+    super.initState();
+    _hideBalanceController = ValueNotifier<bool>(false);
+  }
+
+  @override
+  void dispose() {
+    _hideBalanceController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -101,13 +121,15 @@ class _UserCard extends StatelessWidget {
                 ),
               ),
             ),
-            const _UserNameAndBalance(),
-            Assets.icons.eyeSlash.svg(
-              width: 16,
-              height: 16,
-              colorFilter: ColorFilter.mode(
-                context.theme.colors.text4,
-                BlendMode.srcIn,
+            _UserNameAndBalance(
+              hideBalanceController: _hideBalanceController,
+            ),
+            AnimatedBuilder(
+              animation: _hideBalanceController,
+              builder: (context, child) => EyeSuffix(
+                isShow: _hideBalanceController.value,
+                onTap: () => _hideBalanceController.value =
+                    !_hideBalanceController.value,
               ),
             ),
           ],
@@ -117,8 +139,11 @@ class _UserCard extends StatelessWidget {
 
 @immutable
 class _UserNameAndBalance extends StatelessWidget {
-  /// Имя
+  final ValueNotifier<bool> hideBalanceController;
+
+  /// Имя и баланс
   const _UserNameAndBalance({
+    required this.hideBalanceController,
     Key? key,
   }) : super(key: key);
 
@@ -136,23 +161,26 @@ class _UserNameAndBalance extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              RichText(
-                text: TextSpan(
+              AnimatedBuilder(
+                animation: hideBalanceController,
+                builder: (context, child) => RichText(
+                  text: TextSpan(
                     text: 'Current balance: ',
                     style: context.theme.textTheme.bodyRegular12.copyWith(
                       color: context.theme.colors.text4,
                     ),
                     children: [
                       TextSpan(
-                        text: 'N10,712:00',
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () =>
-                              context.router.push(const NotificationRoute()),
+                        text: hideBalanceController.value
+                            ? 'N********'
+                            : 'N10,712:00',
                         style: context.theme.textTheme.bodyRegular12.copyWith(
                           color: context.theme.colors.primary,
                         ),
                       ),
-                    ]),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -177,12 +205,14 @@ class _DarkModeSwitchState extends State<_DarkModeSwitch> {
   @override
   void initState() {
     super.initState();
-    _darkModeController = ValueNotifier<bool>(false);
+    _darkModeController = ValueNotifier<bool>(false)..addListener(_toggle);
   }
 
   @override
   void dispose() {
-    _darkModeController.dispose();
+    _darkModeController
+      ..removeListener(_toggle)
+      ..dispose();
     super.dispose();
   }
 
@@ -213,6 +243,10 @@ class _DarkModeSwitchState extends State<_DarkModeSwitch> {
             ),
           ],
         ),
+      );
+
+  void _toggle() => context.container.read(AppThemeDI.bloc).add(
+        const AppThemeEvent.toggle(),
       );
 }
 
