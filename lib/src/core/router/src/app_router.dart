@@ -92,6 +92,12 @@ class AppRouter extends $AppRouter {
           page: NotificationRoute.page,
           path: 'notification',
         ),
+
+        /// Экран "Добавить способ оплаты"
+        AdaptiveRoute(
+          page: AddPaymentMethodRoute.page,
+          path: 'add-payment-method',
+        ),
       ],
     ),
   ];

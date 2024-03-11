@@ -1,5 +1,6 @@
-export 'auth_title_text.dart';
-export 'eye_suffix.dart';
-export 'keyboard_hider.dart';
-export 'primary_app_bar.dart';
-export 'primary_text_field.dart';
+export 'src/auth_title_text.dart';
+export 'src/avatar.dart';
+export 'src/eye_suffix.dart';
+export 'src/keyboard_hider.dart';
+export 'src/primary_app_bar.dart';
+export 'src/primary_text_field.dart';

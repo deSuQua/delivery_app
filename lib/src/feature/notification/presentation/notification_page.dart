@@ -42,7 +42,7 @@ class _BodyLayout extends StatelessWidget {
                 width: 80,
                 height: 80,
                 colorFilter: ColorFilter.mode(
-                  context.theme.colors.gray2,
+                  context.theme.colors.appBarTitle,
                   BlendMode.srcIn,
                 ),
               ),
@@ -50,7 +50,7 @@ class _BodyLayout extends StatelessWidget {
             Text(
               'You have no notifications',
               style: context.theme.textTheme.subtitleMedium16.copyWith(
-                color: context.theme.colors.text4,
+                color: context.theme.colors.appBarTitle,
               ),
               textAlign: TextAlign.center,
             ),

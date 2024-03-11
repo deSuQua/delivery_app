@@ -33,9 +33,13 @@ abstract class IAppColors {
 
   Color get gray1;
   Color get gray2;
+  Color get gray6;
 
   Color get white;
   Color get background;
+  Color get appBar;
+  Color get black;
+  Color get appBarTitle;
 }
 
 abstract class AppColorsLightBase implements IAppColors {
@@ -90,10 +94,22 @@ abstract class AppColorsLightBase implements IAppColors {
   Color get gray2 => const Color(0xffA7A7A7);
 
   @override
+  Color get gray6 => const Color(0xffF2F2F2);
+
+  @override
   Color get white => const Color(0xffFFFFFF);
 
   @override
   Color get background => const Color(0xffFFFFFF);
+
+  @override
+  Color get appBar => const Color(0xffFFFFFF);
+
+  @override
+  Color get black => const Color(0xff000000);
+
+  @override
+  Color get appBarTitle => const Color(0xffA7A7A7);
 
   const AppColorsLightBase();
 }
@@ -148,12 +164,23 @@ abstract class AppColorsDarkBase implements IAppColors {
   Color get gray1 => const Color(0xffCFCFCF);
   @override
   Color get gray2 => const Color(0xffA7A7A7);
+  @override
+  Color get gray6 => const Color(0xffF2F2F2);
 
   @override
   Color get white => const Color(0xffFFFFFF);
 
   @override
   Color get background => const Color(0xff000D1D);
+
+  @override
+  Color get appBar => const Color(0xff001B3B);
+
+  @override
+  Color get black => const Color(0xff000000);
+
+  @override
+  Color get appBarTitle => const Color(0xffFFFFFF);
 
   const AppColorsDarkBase();
 }

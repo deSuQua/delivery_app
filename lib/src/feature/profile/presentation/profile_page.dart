@@ -6,6 +6,7 @@ import 'package:delivery_app/src/core/ui_kit/src/app_kit/app_kit.dart';
 import 'package:delivery_app/src/feature/app_theme/bloc/app_theme.dart';
 import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @immutable
 @RoutePage<void>(name: 'ProfileTab')
@@ -61,6 +62,7 @@ class _BodyLayout extends StatelessWidget {
               icon: Assets.icons.card,
               title: 'Card & Bank account settings',
               subtitle: 'change cards, delete card details',
+              onTap: () => context.router.push(const AddPaymentMethodRoute()),
             ),
             _ProfileTile(
               icon: Assets.icons.referrals,
@@ -75,6 +77,7 @@ class _BodyLayout extends StatelessWidget {
             _ProfileTile(
               icon: Assets.icons.logout,
               title: 'Log Out',
+              isLogout: true,
             ),
           ],
         ),
@@ -138,7 +141,7 @@ class _UserCardState extends State<_UserCard> {
 }
 
 @immutable
-class _UserNameAndBalance extends StatelessWidget {
+class _UserNameAndBalance extends ConsumerWidget {
   final ValueNotifier<bool> hideBalanceController;
 
   /// Имя и баланс
@@ -148,7 +151,7 @@ class _UserNameAndBalance extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Expanded(
+  Widget build(BuildContext context, WidgetRef ref) => Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6),
           child: Column(
@@ -157,7 +160,11 @@ class _UserNameAndBalance extends StatelessWidget {
               Text(
                 'Hello Ken',
                 style: context.theme.textTheme.subtitleMedium16.copyWith(
-                  color: context.theme.colors.text4,
+                  color: context.getColorPair(
+                    context.theme.colors.text4,
+                    context.theme.colors.white,
+                    ref,
+                  ),
                 ),
               ),
               const SizedBox(height: 4),
@@ -167,7 +174,11 @@ class _UserNameAndBalance extends StatelessWidget {
                   text: TextSpan(
                     text: 'Current balance: ',
                     style: context.theme.textTheme.bodyRegular12.copyWith(
-                      color: context.theme.colors.text4,
+                      color: context.getColorPair(
+                        context.theme.colors.text4,
+                        context.theme.colors.white,
+                        ref,
+                      ),
                     ),
                     children: [
                       TextSpan(
@@ -189,17 +200,17 @@ class _UserNameAndBalance extends StatelessWidget {
 }
 
 @immutable
-class _DarkModeSwitch extends StatefulWidget {
+class _DarkModeSwitch extends ConsumerStatefulWidget {
   /// Переключатель темной темы
   const _DarkModeSwitch({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<_DarkModeSwitch> createState() => _DarkModeSwitchState();
+  ConsumerState<_DarkModeSwitch> createState() => _DarkModeSwitchState();
 }
 
-class _DarkModeSwitchState extends State<_DarkModeSwitch> {
+class _DarkModeSwitchState extends ConsumerState<_DarkModeSwitch> {
   late final ValueNotifier<bool> _darkModeController;
 
   @override
@@ -228,7 +239,11 @@ class _DarkModeSwitchState extends State<_DarkModeSwitch> {
               child: Text(
                 'Enable dark Mode',
                 style: context.theme.textTheme.subtitleMedium16.copyWith(
-                  color: context.theme.colors.text4,
+                  color: context.getColorPair(
+                    context.theme.colors.text4,
+                    context.theme.colors.white,
+                    ref,
+                  ),
                 ),
               ),
             ),
@@ -251,11 +266,12 @@ class _DarkModeSwitchState extends State<_DarkModeSwitch> {
 }
 
 @immutable
-class _ProfileTile extends StatelessWidget {
+class _ProfileTile extends ConsumerWidget {
   final SvgGenImage icon;
   final String title;
   final String? subtitle;
   final VoidCallback? onTap;
+  final bool isLogout;
 
   /// Плитка
   const _ProfileTile({
@@ -263,11 +279,12 @@ class _ProfileTile extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.onTap,
+    this.isLogout = false,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.only(
           bottom: 12,
           left: 24,
@@ -277,7 +294,11 @@ class _ProfileTile extends StatelessWidget {
           onTap: onTap,
           child: Ink(
             decoration: BoxDecoration(
-              color: context.theme.colors.white,
+              color: context.getColorPair(
+                context.theme.colors.white,
+                context.theme.colors.primaryS2,
+                ref,
+              ),
               boxShadow: [
                 BoxShadow(
                     blurRadius: 5,
@@ -289,7 +310,18 @@ class _ProfileTile extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: Row(
                 children: [
-                  icon.svg(),
+                  icon.svg(
+                    colorFilter: isLogout
+                        ? null
+                        : ColorFilter.mode(
+                            context.getColorPair(
+                              context.theme.colors.text4,
+                              context.theme.colors.white,
+                              ref,
+                            ),
+                            BlendMode.srcIn,
+                          ),
+                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -300,7 +332,11 @@ class _ProfileTile extends StatelessWidget {
                             title,
                             style: context.theme.textTheme.subtitleMedium16
                                 .copyWith(
-                              color: context.theme.colors.text4,
+                              color: context.getColorPair(
+                                context.theme.colors.text4,
+                                context.theme.colors.white,
+                                ref,
+                              ),
                             ),
                           ),
                           if (subtitle != null) ...[
@@ -319,7 +355,11 @@ class _ProfileTile extends StatelessWidget {
                   ),
                   Assets.icons.chevronArrowRight.svg(
                     colorFilter: ColorFilter.mode(
-                      context.theme.colors.text3,
+                      context.getColorPair(
+                        context.theme.colors.text3,
+                        context.theme.colors.white,
+                        ref,
+                      ),
                       BlendMode.srcIn,
                     ),
                   )

@@ -2,106 +2,92 @@ import 'package:auto_route/auto_route.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
 import 'package:delivery_app/src/core/resources/resources.dart';
 import 'package:delivery_app/src/core/router/router.dart';
-import 'package:delivery_app/src/feature/app_theme/bloc/app_theme.dart';
-import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @immutable
 @RoutePage<void>()
-class RootTabPage extends StatelessWidget {
+class RootTabPage extends ConsumerWidget {
   /// Корневой экран
   const RootTabPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    print(context.theme.data.brightness);
-    return AutoTabsScaffold(
-      resizeToAvoidBottomInset: false,
-      navigatorObservers: () => [AutoRouteObserver()],
-      routes: const [
-        HomeTab(),
-        WalletTab(),
-        TrackTab(),
-        ProfileTab(),
-      ],
-      bottomNavigationBuilder: (context, tabsRouter) => Consumer(
-        // TODO(all): Вынести в di bloc builder
-        builder: (context, ref, _) => BlocBuilder<AppThemeBloc, AppThemeState>(
-          bloc: ref.watch(AppThemeDI.bloc),
-          builder: (context, state) => SizedBox(
-            height: 60 + context.mediaQuery.padding.bottom,
-            child: Theme(
-              data: context.theme.data.copyWith(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
+  Widget build(BuildContext context, WidgetRef ref) => AutoTabsScaffold(
+        resizeToAvoidBottomInset: false,
+        navigatorObservers: () => [AutoRouteObserver()],
+        routes: const [
+          HomeTab(),
+          WalletTab(),
+          TrackTab(),
+          ProfileTab(),
+        ],
+        bottomNavigationBuilder: (context, tabsRouter) => SizedBox(
+          height: 60 + context.mediaQuery.padding.bottom,
+          child: Theme(
+            data: context.theme.data.copyWith(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                  ),
+                ],
               ),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                    ),
-                  ],
+              child: BottomNavigationBar(
+                backgroundColor: context.theme.colors.background,
+                selectedItemColor: context.theme.colors.primary,
+                unselectedItemColor: context.getColorPair(
+                  context.theme.colors.gray2,
+                  context.theme.colors.white,
+                  ref,
                 ),
-                child: BottomNavigationBar(
-                  backgroundColor: state.map(
-                    light: (_) => context.theme.colors.background,
-                    dark: (_) => context.theme.colors.background,
+                onTap: context.tabsRouter.setActiveIndex,
+                currentIndex: context.watchTabsRouter.activeIndex,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: _NavigationIcon(
+                      activeIndex: 0,
+                      icon: Assets.icons.home,
+                      selectedIcon: Assets.icons.homeSelected,
+                    ),
+                    label: 'Home',
                   ),
-                  selectedItemColor: context.theme.colors.primary,
-                  unselectedItemColor: state.map(
-                    light: (_) => context.theme.colors.gray2,
-                    dark: (_) => context.theme.colors.white,
+                  BottomNavigationBarItem(
+                    icon: _NavigationIcon(
+                      activeIndex: 1,
+                      icon: Assets.icons.wallet,
+                      selectedIcon: Assets.icons.walletSelected,
+                    ),
+                    label: 'Wallet',
                   ),
-                  onTap: context.tabsRouter.setActiveIndex,
-                  currentIndex: context.watchTabsRouter.activeIndex,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: _NavigationIcon(
-                        activeIndex: 0,
-                        icon: Assets.icons.home,
-                        selectedIcon: Assets.icons.homeSelected,
-                      ),
-                      label: 'Home',
+                  BottomNavigationBarItem(
+                    icon: _NavigationIcon(
+                      activeIndex: 2,
+                      icon: Assets.icons.track,
+                      selectedIcon: Assets.icons.trackSelected,
                     ),
-                    BottomNavigationBarItem(
-                      icon: _NavigationIcon(
-                        activeIndex: 1,
-                        icon: Assets.icons.wallet,
-                        selectedIcon: Assets.icons.walletSelected,
-                      ),
-                      label: 'Wallet',
+                    label: 'Track',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: _NavigationIcon(
+                      activeIndex: 3,
+                      icon: Assets.icons.profile,
+                      selectedIcon: Assets.icons.profileSelected,
                     ),
-                    BottomNavigationBarItem(
-                      icon: _NavigationIcon(
-                        activeIndex: 2,
-                        icon: Assets.icons.track,
-                        selectedIcon: Assets.icons.trackSelected,
-                      ),
-                      label: 'Track',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: _NavigationIcon(
-                        activeIndex: 3,
-                        icon: Assets.icons.profile,
-                        selectedIcon: Assets.icons.profileSelected,
-                      ),
-                      label: 'Profile',
-                    ),
-                  ],
-                ),
+                    label: 'Profile',
+                  ),
+                ],
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 @immutable

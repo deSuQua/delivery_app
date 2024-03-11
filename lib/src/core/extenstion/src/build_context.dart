@@ -1,4 +1,5 @@
 import 'package:delivery_app/src/core/app_theme/app_theme.dart';
+import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
 import 'package:delivery_app/src/feature/app_theme/presentation/app_theme_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,4 +18,13 @@ extension BuildContextX on BuildContext {
 
   /// MeaiqQuery
   MediaQueryData get mediaQuery => MediaQuery.of(this);
+
+  Color getColorPair(Color lightColor, Color darkColor, WidgetRef ref) {
+    final brightness = ref.watch(AppThemeDI.theme).data.brightness;
+    if (brightness == Brightness.light) {
+      return lightColor;
+    }
+
+    return darkColor;
+  }
 }
