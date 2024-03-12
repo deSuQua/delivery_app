@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
 import 'package:delivery_app/src/core/router/router.dart';
 import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
+import 'package:delivery_app/src/feature/auth/bloc/auth.dart';
+import 'package:delivery_app/src/feature/auth/di/auth_di.dart';
 import 'package:delivery_app/src/feature/auth/presentation/widgets/widgets.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
@@ -117,6 +119,7 @@ class _BodyLayoutState extends State<_BodyLayout> {
                 ),
                 _BottomButton(
                   validator: _validator,
+                  onTap: _onSignUp,
                 ),
                 const _SignInText(),
                 GoogleButton(
@@ -127,10 +130,28 @@ class _BodyLayoutState extends State<_BodyLayout> {
             )),
       );
 
+  void _onSignUp() {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final phone = _phoneController.text.trim();
+    final name = _fullNameController.text.trim();
+    if (!EmailValidator.validate(_emailController.text)) {
+      context.showSnackBar('Email не корректный');
+      return;
+    }
+
+    context.container.read(AuthDI.bloc).add(AuthEvent.signUpEmail(
+          email: email,
+          password: password,
+          phone: phone,
+          name: name,
+        ));
+  }
+
   void _validate() =>
       _validator.value = _fullNameController.text.trim().isNotEmpty &&
           _phoneController.text.trim().isNotEmpty &&
-          EmailValidator.validate(_emailController.text) &&
+          _emailController.text.trim().isNotEmpty &&
           _passwordController.text.trim().isNotEmpty &&
           _confirmPasswordController.text.trim() ==
               _passwordController.text.trim() &&
@@ -270,9 +291,11 @@ class _CheckBox extends StatelessWidget {
 @immutable
 class _BottomButton extends StatelessWidget {
   final ValueNotifier<bool> validator;
+  final VoidCallback onTap;
 
   const _BottomButton({
     required this.validator,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -281,9 +304,14 @@ class _BottomButton extends StatelessWidget {
         padding: const EdgeInsets.only(top: 64),
         child: AnimatedBuilder(
           animation: validator,
-          builder: (BuildContext context, Widget? child) => ElevatedButton(
-            onPressed: validator.value ? () {} : null,
-            child: const Text('Sign Up'),
+          builder: (BuildContext context, Widget? child) =>
+              DIBlocBuilder<AuthBloc, AuthState>(
+            bloc: AuthDI.bloc,
+            builder: (context, state) => PrimaryButton(
+              onTap: validator.value ? onTap : null,
+              isProgress: state.isProgress,
+              text: 'Sign Up',
+            ),
           ),
         ),
       );

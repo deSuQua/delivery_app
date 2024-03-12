@@ -1,7 +1,7 @@
 import 'package:delivery_app/src/core/app_theme/app_theme.dart';
 import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
 import 'package:delivery_app/src/feature/app_theme/presentation/app_theme_scope.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 extension BuildContextX on BuildContext {
@@ -26,5 +26,11 @@ extension BuildContextX on BuildContext {
     }
 
     return darkColor;
+  }
+
+  void showSnackBar(String text) {
+    ScaffoldMessenger.of(this).showSnackBar(SnackBar(
+      content: Text(text),
+    ));
   }
 }

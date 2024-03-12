@@ -33,6 +33,12 @@ dependencies:
   # Validation
   email_validator: ^2.1.17
 
+  # Data base
+  supabase_flutter: ^2.3.4
+
+  # Network
+  dio: ^5.4.1
+
 
 dev_dependencies:
   flutter_test:

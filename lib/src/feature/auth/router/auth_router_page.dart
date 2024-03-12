@@ -1,4 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:delivery_app/src/core/router/router.dart';
+import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
+import 'package:delivery_app/src/feature/auth/bloc/auth.dart';
+import 'package:delivery_app/src/feature/auth/di/auth_di.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -10,7 +14,18 @@ class AuthRouterPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => AutoRouter(
-        builder: (context, child) => child,
+  Widget build(BuildContext context) => DIBlocListener<AuthBloc, AuthState>(
+        bloc: AuthDI.bloc,
+        listener: (BuildContext context, state) {
+          if (state.user != null) {
+            context.router.pushAndPopUntil(
+              const RootRouterRoute(),
+              predicate: (_) => false,
+            );
+          }
+        },
+        child: AutoRouter(
+          builder: (context, child) => child,
+        ),
       );
 }

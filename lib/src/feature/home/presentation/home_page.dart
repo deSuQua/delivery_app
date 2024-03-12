@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
 import 'package:delivery_app/src/core/resources/resources.dart';
+import 'package:delivery_app/src/core/router/router.dart';
 import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
 import 'package:delivery_app/src/feature/home/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -157,12 +158,18 @@ class _UserCard extends ConsumerWidget {
                       children: [
                         const Avatar(),
                         const _UserNameAndSubtitle(),
-                        Assets.icons.bell.svg(
-                          width: 24,
-                          height: 24,
-                          colorFilter: ColorFilter.mode(
-                            context.theme.colors.white,
-                            BlendMode.srcIn,
+                        IconButton(
+                          onPressed: () => _onBell(context),
+                          style: IconButton.styleFrom(
+                            foregroundColor: context.theme.colors.white,
+                          ),
+                          icon: Assets.icons.bell.svg(
+                            width: 24,
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                              context.theme.colors.white,
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
                       ],
@@ -174,6 +181,9 @@ class _UserCard extends ConsumerWidget {
           ),
         ),
       );
+
+  Future<void> _onBell(BuildContext context) =>
+      context.router.push(const NotificationRoute());
 }
 
 @immutable

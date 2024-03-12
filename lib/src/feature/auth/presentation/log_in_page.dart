@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
 import 'package:delivery_app/src/core/router/router.dart';
 import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
+import 'package:delivery_app/src/feature/auth/bloc/auth.dart';
+import 'package:delivery_app/src/feature/auth/di/auth_di.dart';
 import 'package:delivery_app/src/feature/auth/presentation/widgets/widgets.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -127,11 +129,21 @@ class _BodyLayoutState extends State<_BodyLayout> {
               ),
               _BottomLayout(
                 validator: _validator,
+                onTap: () => _onLogin(context),
               ),
             ],
           ),
         ),
       );
+
+  void _onLogin(BuildContext context) {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    context.container.read(AuthDI.bloc).add(AuthEvent.logInEmail(
+          email: email,
+          password: password,
+        ));
+  }
 
   void _validate() =>
       _validator.value = EmailValidator.validate(_emailController.text) &&
@@ -207,9 +219,11 @@ class _ForgotPasswordButton extends StatelessWidget {
 @immutable
 class _BottomLayout extends StatelessWidget {
   final ValueNotifier<bool> validator;
+  final VoidCallback onTap;
 
   const _BottomLayout({
     required this.validator,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -221,7 +235,7 @@ class _BottomLayout extends StatelessWidget {
             AnimatedBuilder(
               animation: validator,
               builder: (BuildContext context, Widget? child) => ElevatedButton(
-                onPressed: validator.value ? () => _onLogin(context) : null,
+                onPressed: validator.value ? onTap : null,
                 child: const Text('Log in'),
               ),
             ),
@@ -240,9 +254,6 @@ class _BottomLayout extends StatelessWidget {
           ],
         ),
       );
-
-  void _onLogin(BuildContext context) =>
-      context.router.push(const RootRouterRoute());
 }
 
 @immutable

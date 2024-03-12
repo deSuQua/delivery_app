@@ -5,6 +5,8 @@ import 'package:delivery_app/src/core/router/router.dart';
 import 'package:delivery_app/src/core/ui_kit/src/app_kit/app_kit.dart';
 import 'package:delivery_app/src/feature/app_theme/bloc/app_theme.dart';
 import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
+import 'package:delivery_app/src/feature/auth/bloc/auth.dart';
+import 'package:delivery_app/src/feature/auth/di/auth_di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -78,10 +80,14 @@ class _BodyLayout extends StatelessWidget {
               icon: Assets.icons.logout,
               title: 'Log Out',
               isLogout: true,
+              onTap: () => _onLogout(context),
             ),
           ],
         ),
       );
+
+  void _onLogout(BuildContext context) =>
+      context.container.read(AuthDI.bloc).add(const AuthEvent.logout());
 }
 
 @immutable
