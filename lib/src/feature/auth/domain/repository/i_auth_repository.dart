@@ -18,6 +18,9 @@ abstract class IAuthRepository {
     required final String password,
   });
 
+  /// Авторизация с помощью гугл аккаунта
+  Future<User?> signInWithGoogle();
+
   /// Выход
   Future<void> logout();
 }

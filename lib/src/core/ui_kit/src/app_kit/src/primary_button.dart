@@ -30,7 +30,7 @@ class PrimaryButton extends StatelessWidget {
       child = Text(text);
     }
     return ElevatedButton(
-      onPressed: onTap,
+      onPressed: isProgress ? () {} : onTap,
       child: child,
     );
   }

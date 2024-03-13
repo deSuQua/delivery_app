@@ -304,10 +304,12 @@ class _BottomButton extends StatelessWidget {
         padding: const EdgeInsets.only(top: 64),
         child: AnimatedBuilder(
           animation: validator,
-          builder: (BuildContext context, Widget? child) =>
-              DIBlocBuilder<AuthBloc, AuthState>(
+          builder: (context, _) => DIBlocConsumer<AuthBloc, AuthState>(
             bloc: AuthDI.bloc,
-            builder: (context, state) => PrimaryButton(
+            listener: (context, state) => state.mapOrNull(
+              error: (e) => context.showSnackBar(e.error),
+            ),
+            builder: (BuildContext context, state) => PrimaryButton(
               onTap: validator.value ? onTap : null,
               isProgress: state.isProgress,
               text: 'Sign Up',
@@ -352,6 +354,7 @@ class _SignInText extends StatelessWidget {
         ),
       );
 
-  Future<void> _onSignIn(BuildContext context) =>
-      context.router.push(const LogInRoute());
+  Future<void> _onSignIn(BuildContext context) => context.router.replace(
+        const LogInRoute(),
+      );
 }

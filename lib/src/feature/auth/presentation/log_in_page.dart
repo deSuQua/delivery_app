@@ -232,11 +232,19 @@ class _BottomLayout extends StatelessWidget {
         padding: const EdgeInsets.only(top: 180),
         child: Column(
           children: [
-            AnimatedBuilder(
-              animation: validator,
-              builder: (BuildContext context, Widget? child) => ElevatedButton(
-                onPressed: validator.value ? onTap : null,
-                child: const Text('Log in'),
+            DIBlocConsumer<AuthBloc, AuthState>(
+              bloc: AuthDI.bloc,
+              listener: (BuildContext context, AuthState state) =>
+                  state.mapOrNull(
+                error: (e) => context.showSnackBar(e.error),
+              ),
+              builder: (BuildContext context, state) => AnimatedBuilder(
+                animation: validator,
+                builder: (BuildContext context, Widget? child) => PrimaryButton(
+                  onTap: validator.value ? onTap : null,
+                  isProgress: state.isProgress,
+                  text: 'Log in',
+                ),
               ),
             ),
             const _SignUpText(),
@@ -248,12 +256,15 @@ class _BottomLayout extends StatelessWidget {
               ),
               child: GoogleButton(
                 text: 'or sign in using',
-                onTap: () {},
+                onTap: () => _onGoogleAuth(context),
               ),
             ),
           ],
         ),
       );
+
+  void _onGoogleAuth(BuildContext context) =>
+      context.container.read(AuthDI.bloc).add(const AuthEvent.google());
 }
 
 @immutable
@@ -290,6 +301,7 @@ class _SignUpText extends StatelessWidget {
         ),
       );
 
-  Future<void> _onSignUp(BuildContext context) =>
-      context.router.push(const SignUpRoute());
+  Future<void> _onSignUp(BuildContext context) => context.router.replace(
+        const SignUpRoute(),
+      );
 }

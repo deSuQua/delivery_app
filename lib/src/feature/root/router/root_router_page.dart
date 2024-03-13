@@ -16,6 +16,7 @@ class RootRouterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DIBlocListener<AuthBloc, AuthState>(
         bloc: AuthDI.bloc,
+        listenWhen: (p, c) => c.user == null,
         listener: (BuildContext context, state) {
           if (state.user == null) {
             context.router.pushAndPopUntil(

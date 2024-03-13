@@ -40,4 +40,7 @@ class AuthRepository extends IAuthRepository {
 
   @override
   Future<void> logout() => _remoteDB.logout();
+
+  @override
+  Future<User?> signInWithGoogle() => _remoteDB.signInWithGoogle();
 }

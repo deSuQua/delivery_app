@@ -20,6 +20,9 @@ abstract class IAuthRemoteDB {
     required final String password,
   });
 
+  /// Авторизация с помощью гугл аккаунта
+  Future<User?> signInWithGoogle();
+
   /// Выход
   Future<void> logout();
 }
@@ -37,7 +40,6 @@ class AuthRemoteDB extends IAuthRemoteDB {
     required final String name,
   }) async {
     final response = await Supabase.instance.client.auth.signUp(
-      phone: phone,
       email: email,
       password: password,
     );
@@ -58,4 +60,12 @@ class AuthRemoteDB extends IAuthRemoteDB {
 
   @override
   Future<void> logout() async => await Supabase.instance.client.auth.signOut();
+
+  @override
+  Future<User?> signInWithGoogle() async {
+    await Supabase.instance.client.auth.signInWithOAuth(
+      OAuthProvider.google,
+    );
+    return Supabase.instance.client.auth.currentUser;
+  }
 }

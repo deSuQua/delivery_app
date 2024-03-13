@@ -51,6 +51,7 @@ abstract class AuthState with _$AuthState {
 
   const factory AuthState.error({
     required User? user,
+    required String error,
   }) = _ErrorAuthState;
 }
 
@@ -79,7 +80,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(AuthState.idle(user: user));
     } on Object catch (e) {
-      emit(AuthState.error(user: state.user));
+      emit(AuthState.error(
+        user: state.user,
+        error: e.toString(),
+      ));
     }
   }
 
@@ -99,16 +103,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           )
           .timeout(const Duration(seconds: 10));
 
-      emit(AuthState.idle(user: user));
+      emit(AuthState.success(user: user));
     } on Object catch (e) {
-      print(e);
-      emit(AuthState.error(user: state.user));
+      emit(AuthState.error(
+        user: state.user,
+        error: e.toString(),
+      ));
     } finally {
-      if (state.user != null) {
-        emit(AuthState.success(user: state.user));
-      } else {
-        emit(const AuthState.error(user: null));
-      }
+      emit(AuthState.idle(user: state.user));
     }
   }
 
@@ -126,22 +128,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           )
           .timeout(const Duration(seconds: 10));
 
-      emit(AuthState.idle(user: user));
+      emit(AuthState.success(user: user));
     } on Object catch (e) {
-      emit(AuthState.error(user: state.user));
+      emit(AuthState.error(
+        user: state.user,
+        error: e.toString(),
+      ));
     } finally {
-      if (state.user != null) {
-        emit(AuthState.success(user: state.user));
-      } else {
-        emit(const AuthState.error(user: null));
-      }
+      emit(AuthState.idle(user: state.user));
     }
   }
 
   Future<void> _google(
     final _GoogleAuthEvent event,
     final Emitter<AuthState> emit,
-  ) async {}
+  ) async {
+    try {
+      emit(AuthState.progress(user: state.user));
+      final user = await _repository
+          .signInWithGoogle()
+          .timeout(const Duration(seconds: 10));
+      emit(AuthState.success(user: user));
+    } on Object catch (e) {
+      emit(AuthState.error(
+        user: state.user,
+        error: e.toString(),
+      ));
+    } finally {
+      emit(AuthState.idle(user: state.user));
+    }
+  }
 
   Future<void> _logout(
     final _LogoutAuthEvent event,
@@ -152,9 +168,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _repository.logout().timeout(const Duration(seconds: 10));
       emit(const AuthState.success(user: null));
     } on Object catch (e) {
-      emit(AuthState.error(user: state.user));
+      emit(AuthState.error(
+        user: state.user,
+        error: e.toString(),
+      ));
     } finally {
-      emit(AuthState.progress(user: state.user));
+      emit(AuthState.idle(user: state.user));
     }
   }
 }

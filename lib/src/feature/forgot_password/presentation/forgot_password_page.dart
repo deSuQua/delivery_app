@@ -144,7 +144,7 @@ class _SignInText extends StatelessWidget {
                   TextSpan(
                     text: 'Sign in',
                     recognizer: TapGestureRecognizer()
-                      ..onTap = () => _onSignUp(context),
+                      ..onTap = () => _onSignIn(context),
                     style: context.theme.textTheme.bodyRegular14.copyWith(
                       color: context.theme.colors.primary,
                     ),
@@ -154,6 +154,5 @@ class _SignInText extends StatelessWidget {
         ),
       );
 
-  Future<void> _onSignUp(BuildContext context) =>
-      context.router.push(const LogInRoute());
+  Future<void> _onSignIn(BuildContext context) => context.router.pop();
 }
