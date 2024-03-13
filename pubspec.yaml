@@ -35,6 +35,7 @@ dependencies:
 
   # Data base
   supabase_flutter: ^2.3.4
+  shared_preferences: ^2.2.2
 
   # Network
   dio: ^5.4.1
