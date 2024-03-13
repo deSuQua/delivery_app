@@ -15,8 +15,14 @@ class AppRouter extends $AppRouter {
     /// Авторизация
     AdaptiveRoute(
       page: AuthRouterRoute.page,
-      path: '/auth',
+      path: '/',
       children: [
+        /// Экран "Приветственный экран"
+        AdaptiveRoute(
+          page: PreviewBoardRoute.page,
+          path: 'preview-board',
+        ),
+
         /// Экран "Регистрация"
         AdaptiveRoute(
           page: SignUpRoute.page,
@@ -53,7 +59,7 @@ class AppRouter extends $AppRouter {
     /// Главный экран
     AdaptiveRoute(
       page: RootRouterRoute.page,
-      path: '/',
+      path: '/root',
       children: [
         /// Главный экран с табами
         AdaptiveRoute(

@@ -33,6 +33,7 @@ abstract class AppThemeBase implements IAppTheme {
         appBarTheme: _appBarTheme,
         iconButtonTheme: _iconButtonTheme,
         elevatedButtonTheme: _elevatedButtonTheme,
+        outlinedButtonTheme: _outlinedButtonTheme,
         checkboxTheme: _checkboxTheme,
         switchTheme: _switchTheme,
         brightness: brightness,
@@ -70,6 +71,22 @@ abstract class AppThemeBase implements IAppTheme {
           textStyle: textTheme.subtitleBold16.copyWith(color: colors.white),
           backgroundColor: colors.primary,
           foregroundColor: colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ).copyWith(elevation: ButtonStyleButton.allOrNull(0)),
+      );
+
+  OutlinedButtonThemeData get _outlinedButtonTheme => OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          maximumSize: const Size.fromHeight(46),
+          minimumSize: const Size.fromHeight(46),
+          textStyle: textTheme.subtitleBold16.copyWith(color: colors.primary),
+          backgroundColor: colors.white,
+          foregroundColor: colors.primary,
+          side: BorderSide(
+            color: colors.primary,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4),
           ),

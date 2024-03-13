@@ -3,16 +3,26 @@ import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
 import 'package:delivery_app/src/feature/app_theme/presentation/app_theme_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class App extends StatelessWidget {
+  final SharedPreferences localStorage;
+  final Supabase supabase;
   const App({
+    required this.localStorage,
+    required this.supabase,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const ProviderScope(
+  Widget build(BuildContext context) => ProviderScope(
+        overrides: [
+          AppDI.localStorage.overrideWithValue(localStorage),
+          AppDI.supabase.overrideWithValue(supabase),
+        ],
         // [=> AppTheme]
-        child: AppThemeScope(
+        child: const AppThemeScope(
           // [=> ToasterMessenger]
           child: MyApp(),
         ),

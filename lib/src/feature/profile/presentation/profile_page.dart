@@ -121,15 +121,7 @@ class _UserCardState extends State<_UserCard> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Row(
           children: [
-            ClipOval(
-              child: SizedBox.square(
-                dimension: 60,
-                child: Image.network(
-                  'https://www.unitedagents.co.uk/sites/default/files/thumbnails/image/guybolton-photo-deadline.jpg',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            const Avatar(),
             _UserNameAndBalance(
               hideBalanceController: _hideBalanceController,
             ),

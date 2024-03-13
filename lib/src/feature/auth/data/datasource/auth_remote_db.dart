@@ -29,8 +29,14 @@ abstract class IAuthRemoteDB {
 
 @immutable
 class AuthRemoteDB extends IAuthRemoteDB {
+  final Supabase _remoteDB;
+
+  AuthRemoteDB({
+    required final Supabase remoteDB,
+  }) : _remoteDB = remoteDB;
+
   @override
-  User? readUser() => Supabase.instance.client.auth.currentUser;
+  User? readUser() => _remoteDB.client.auth.currentUser;
 
   @override
   Future<User?> signUpWithEmail({
@@ -39,7 +45,7 @@ class AuthRemoteDB extends IAuthRemoteDB {
     required final String phone,
     required final String name,
   }) async {
-    final response = await Supabase.instance.client.auth.signUp(
+    final response = await _remoteDB.client.auth.signUp(
       email: email,
       password: password,
     );
@@ -51,7 +57,7 @@ class AuthRemoteDB extends IAuthRemoteDB {
     required final String email,
     required final String password,
   }) async {
-    final response = await Supabase.instance.client.auth.signInWithPassword(
+    final response = await _remoteDB.client.auth.signInWithPassword(
       email: email,
       password: password,
     );
@@ -59,13 +65,13 @@ class AuthRemoteDB extends IAuthRemoteDB {
   }
 
   @override
-  Future<void> logout() async => await Supabase.instance.client.auth.signOut();
+  Future<void> logout() async => await _remoteDB.client.auth.signOut();
 
   @override
   Future<User?> signInWithGoogle() async {
-    await Supabase.instance.client.auth.signInWithOAuth(
+    await _remoteDB.client.auth.signInWithOAuth(
       OAuthProvider.google,
     );
-    return Supabase.instance.client.auth.currentUser;
+    return _remoteDB.client.auth.currentUser;
   }
 }

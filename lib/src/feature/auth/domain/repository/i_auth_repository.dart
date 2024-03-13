@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+@immutable
 abstract class IAuthRepository {
   /// Получение пользователя
   User? readUser();

@@ -5,6 +5,8 @@ import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
 import 'package:delivery_app/src/feature/auth/bloc/auth.dart';
 import 'package:delivery_app/src/feature/auth/di/auth_di.dart';
 import 'package:delivery_app/src/feature/auth/presentation/widgets/widgets.dart';
+import 'package:delivery_app/src/feature/preview_board/bloc/preview_board.dart';
+import 'package:delivery_app/src/feature/preview_board/di/preview_board_di.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +18,21 @@ class SignUpPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const KeyboardHider(
-        child: Scaffold(
-          body: _BodyLayout(),
+  Widget build(BuildContext context) =>
+      DIBlocListener<PreviewBoardBloc, PreviewBoardState>(
+        bloc: PreviewBoardDI.bloc,
+        listener: (BuildContext context, state) {
+          if (!state.isViewed) {
+            context.router.pushAndPopUntil(
+              const PreviewBoardRoute(),
+              predicate: (_) => false,
+            );
+          }
+        },
+        child: const KeyboardHider(
+          child: Scaffold(
+            body: _BodyLayout(),
+          ),
         ),
       );
 }
