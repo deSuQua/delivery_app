@@ -1,15 +1,5 @@
 .PHONY: firebase-init clean format get upgrade upgrade-major outdated codegen clean-pod install-pod native-splash-create native-splash-remove launcher-icons-create run-dev run-prod build-dev-apk build-prod-apk build-dev-web build-prod-web
 
-firebase-init:
-	@echo "Firebase init"
-	@dart pub global activate flutterfire_cli
-	@flutterfire configure \
-		-i ru.halikovstudio.ayda \
-		-a ru.halikovstudio.ayda \
-		-p ayda-application \
-		-e xalikov.app2022@gmail.com \
-		-o lib/src/runner/firebase_config/src/firebase_options.g.dart
-
 clean:
 	@echo "Cleaning the project"
 	@flutter clean
