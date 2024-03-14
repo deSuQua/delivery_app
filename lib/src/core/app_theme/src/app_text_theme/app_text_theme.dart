@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 @immutable
 abstract class IAppTextTheme {
@@ -44,153 +45,134 @@ abstract class IAppTextTheme {
 @immutable
 abstract class AppTextThemeBase implements IAppTextTheme {
   @override
-  TextStyle get headingBlack128 => const TextStyle(
+  TextStyle get headingBlack128 => GoogleFonts.roboto(
         fontWeight: FontWeight.w900,
-        fontFamily: 'Roboto',
         fontSize: 128,
         height: 1,
       );
 
   @override
-  TextStyle get headingBlack96 => const TextStyle(
+  TextStyle get headingBlack96 => GoogleFonts.roboto(
         fontWeight: FontWeight.w900,
-        fontFamily: 'Roboto',
         fontSize: 96,
         height: 1,
       );
 
   @override
-  TextStyle get headingExtraBold64 => const TextStyle(
+  TextStyle get headingExtraBold64 => GoogleFonts.roboto(
         fontWeight: FontWeight.w800,
-        fontFamily: 'Roboto',
         fontSize: 64,
         height: 1,
       );
 
   @override
-  TextStyle get headingExtraBoldExtraBold36 => const TextStyle(
+  TextStyle get headingExtraBoldExtraBold36 => GoogleFonts.roboto(
         fontWeight: FontWeight.w800,
-        fontFamily: 'Roboto',
         fontSize: 36,
         height: 1,
       );
 
   @override
-  TextStyle get headingBold36 => const TextStyle(
+  TextStyle get headingBold36 => GoogleFonts.roboto(
         fontWeight: FontWeight.w700,
-        fontFamily: 'Roboto',
         fontSize: 36,
         height: 1,
       );
 
   @override
-  TextStyle get headingBold24 => const TextStyle(
+  TextStyle get headingBold24 => GoogleFonts.roboto(
         fontWeight: FontWeight.w700,
-        fontFamily: 'Roboto',
         fontSize: 24,
         height: 1,
       );
 
   @override
-  TextStyle get headingMedium24 => const TextStyle(
+  TextStyle get headingMedium24 => GoogleFonts.roboto(
         fontWeight: FontWeight.w500,
-        fontFamily: 'Roboto',
         fontSize: 24,
         height: 1,
       );
 
   @override
-  TextStyle get headingSemiBold20 => const TextStyle(
+  TextStyle get headingSemiBold20 => GoogleFonts.roboto(
         fontWeight: FontWeight.w600,
-        fontFamily: 'Roboto',
         fontSize: 20,
         height: 1,
       );
 
   @override
-  TextStyle get headingMedium20 => const TextStyle(
+  TextStyle get headingMedium20 => GoogleFonts.roboto(
         fontWeight: FontWeight.w500,
-        fontFamily: 'Roboto',
         fontSize: 20,
         height: 1,
       );
 
   @override
-  TextStyle get subtitleMedium18 => const TextStyle(
+  TextStyle get subtitleMedium18 => GoogleFonts.roboto(
         fontWeight: FontWeight.w500,
-        fontFamily: 'Roboto',
         fontSize: 18,
         height: 1,
       );
 
   @override
-  TextStyle get subtitleBold16 => const TextStyle(
+  TextStyle get subtitleBold16 => GoogleFonts.roboto(
         fontWeight: FontWeight.w700,
-        fontFamily: 'Roboto',
         fontSize: 16,
         height: 1,
       );
 
   @override
-  TextStyle get subtitleMedium16 => const TextStyle(
+  TextStyle get subtitleMedium16 => GoogleFonts.roboto(
         fontWeight: FontWeight.w500,
-        fontFamily: 'Roboto',
         fontSize: 16,
         height: 1,
       );
 
   @override
-  TextStyle get subtitleRegular16 => const TextStyle(
+  TextStyle get subtitleRegular16 => GoogleFonts.roboto(
         fontWeight: FontWeight.w400,
-        fontFamily: 'Roboto',
         fontSize: 16,
         height: 1,
       );
 
   @override
-  TextStyle get bodyRegular16 => const TextStyle(
+  TextStyle get bodyRegular16 => GoogleFonts.roboto(
         fontWeight: FontWeight.w400,
-        fontFamily: 'Roboto',
         fontSize: 16,
         height: 1,
       );
 
   @override
-  TextStyle get bodySemiBold14 => const TextStyle(
+  TextStyle get bodySemiBold14 => GoogleFonts.roboto(
         fontWeight: FontWeight.w600,
-        fontFamily: 'Roboto',
         fontSize: 14,
         height: 1,
       );
 
   @override
-  TextStyle get bodyMedium14 => const TextStyle(
+  TextStyle get bodyMedium14 => GoogleFonts.roboto(
         fontWeight: FontWeight.w500,
-        fontFamily: 'Roboto',
         fontSize: 14,
         height: 1,
       );
 
   @override
-  TextStyle get bodyRegular14 => const TextStyle(
+  TextStyle get bodyRegular14 => GoogleFonts.roboto(
         fontWeight: FontWeight.w400,
-        fontFamily: 'Roboto',
         fontSize: 14,
         height: 1,
       );
 
   @override
-  TextStyle get bodyMedium12 => const TextStyle(
+  TextStyle get bodyMedium12 => GoogleFonts.roboto(
         fontWeight: FontWeight.w500,
-        fontFamily: 'Roboto',
         fontSize: 12,
         height: 1,
       );
 
   @override
-  TextStyle get bodyRegular12 => const TextStyle(
+  TextStyle get bodyRegular12 => GoogleFonts.roboto(
         fontWeight: FontWeight.w400,
-        fontFamily: 'Roboto',
         fontSize: 12,
         height: 1,
       );

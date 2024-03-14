@@ -1,10 +1,10 @@
 import 'package:delivery_app/src/core/app_theme/app_theme.dart';
 import 'package:delivery_app/src/core/app_theme/src/app_text_theme/app_text_theme.dart';
 import 'package:delivery_app/src/core/extenstion/extenstions.dart';
+import 'package:delivery_app/src/core/ui_kit/ui_kit.dart';
 import 'package:delivery_app/src/feature/app_theme/bloc/app_theme.dart';
 import 'package:delivery_app/src/feature/app_theme/di/app_theme_di.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AppThemeScope extends StatelessWidget {
@@ -26,29 +26,27 @@ class AppThemeScope extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => Consumer(
-        // TODO(all): Вынести в di bloc builder
-        builder: (context, ref, _) => BlocBuilder<AppThemeBloc, AppThemeState>(
-          bloc: ref.watch(AppThemeDI.bloc),
-          builder: (context, state) => ProviderScope(
-            overrides: [
-              AppThemeDI.theme.overrideWithValue(
-                state.map(
-                  light: (_) => AppThemeLight(
-                    textTheme: AppTextTheme(),
-                    colors: const AppColorsLight(),
-                    brightness: Brightness.light,
-                  ),
-                  dark: (_) => AppThemeDark(
-                    textTheme: AppTextTheme(),
-                    colors: const AppColorsDark(),
-                    brightness: Brightness.dark,
-                  ),
+  Widget build(BuildContext context) =>
+      DIBlocBuilder<AppThemeBloc, AppThemeState>(
+        bloc: AppThemeDI.bloc,
+        builder: (context, state) => ProviderScope(
+          overrides: [
+            AppThemeDI.theme.overrideWithValue(
+              state.map(
+                light: (_) => AppThemeLight(
+                  textTheme: AppTextTheme(),
+                  colors: const AppColorsLight(),
+                  brightness: Brightness.light,
+                ),
+                dark: (_) => AppThemeDark(
+                  textTheme: AppTextTheme(),
+                  colors: const AppColorsDark(),
+                  brightness: Brightness.dark,
                 ),
               ),
-            ],
-            child: child,
-          ),
+            ),
+          ],
+          child: child,
         ),
       );
 }
