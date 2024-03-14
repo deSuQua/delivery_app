@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:yandex_mapkit_lite/yandex_mapkit_lite.dart';
 
 @immutable
 @RoutePage<void>(name: 'TrackTab')
@@ -23,5 +24,5 @@ class _BodyLayout extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => const Placeholder();
+  Widget build(BuildContext context) => YandexMap();
 }
